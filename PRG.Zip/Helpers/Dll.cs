@@ -32,7 +32,7 @@ namespace PRG.Zip.Helpers
         /// Create new node with given value
         /// Try to add in front of head, after tail or correct position
         /// </algo>
-        public static void AddInOrder(int frequency, byte charByte)
+        public static Node AddInOrder(int frequency, byte charByte)
         {
             var n = new Node(frequency, charByte);
 
@@ -73,6 +73,8 @@ namespace PRG.Zip.Helpers
                     }
                 }
             }
+
+            return Head;
         }
 
         /// <summary>
