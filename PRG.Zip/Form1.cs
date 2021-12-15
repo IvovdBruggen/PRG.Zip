@@ -15,7 +15,15 @@ namespace PRG.Zip
 
         private void BtnZip_Click(object sender, EventArgs e)
         {
-            Zipper.Zip();
+            StreamReader sr = FileHelper.OpenFile();
+            int[] frequency = Zipper.CalculateFrequency(sr);
+            
+            Node n;
+            for (int i = 0; i < frequency.Length; i++)
+                if (frequency[i] != 0)
+                    n = Dll.AddInOrder(frequency[i], Convert.ToByte(i));
+
+            Tree.BuildTree();
         }
     }
 }

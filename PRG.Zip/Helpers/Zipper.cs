@@ -15,17 +15,14 @@ namespace Prg.Zip.Helpers
         /// Create a node with Frequency and according character
         /// Create tree out of nodes
         /// </algo>
-        public static void Zip()
+        public static void Zip(StreamReader file)
         {
-            StreamReader file = FileHelper.OpenFile();
-
+            Node n;
             int[] frequencyTable = CalculateFrequency(file);
-            
+
             for (int i = 0; i < frequencyTable.Length; i++)
-            {
-                if(frequencyTable[i] == 0) continue;
-                Dll.AddInOrder(frequencyTable[i], Convert.ToByte(i));
-            }
+                if (frequencyTable[i] != 0)
+                    n = Dll.AddInOrder(frequencyTable[i], Convert.ToByte(i));
 
             Tree.BuildTree();
         }
@@ -38,7 +35,7 @@ namespace Prg.Zip.Helpers
         /// As long as there are characters in the string, up the frequency for that char
         /// Return byte[]
         /// </algo>
-        private static int[] CalculateFrequency(StreamReader file)
+        public static int[] CalculateFrequency(StreamReader file)
         {
             int[] temp = new int[256];
             int tempChar = file.Read();
