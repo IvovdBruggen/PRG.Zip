@@ -8,19 +8,25 @@ namespace PRG.Zip.Helpers
         /// <summary>
         /// Return filestream from OpenFileDialog
         /// </summary>
-        public static StreamReader OpenFile()
-        {   
-            // var file = new OpenFileDialog();
-            // file.ShowDialog();
-            // return file.ShowDialog() != DialogResult.OK ? null : file.OpenFile();
-
+        public static OpenFileDialog OpenFile()
+        {
             var dialog = new OpenFileDialog();
 
-            if (dialog.ShowDialog() != DialogResult.OK) return null;
-            
-            StreamReader stream = File.OpenText(dialog.FileName);
-            
-            return stream;
+            return dialog.ShowDialog() != DialogResult.OK ? null : dialog;
+        }
+
+        public static FolderBrowserDialog OpenFolder()
+        {
+            var dialog = new FolderBrowserDialog();
+
+            return dialog.ShowDialog() != DialogResult.OK ? null : dialog;
+        }
+
+        public static void CreateFile(string path, string fileName, string content)
+        {
+            var file = File.CreateText(path + $"\\{fileName}");
+            file.Write(content);
+            file.Close();
         }
     }
 }
