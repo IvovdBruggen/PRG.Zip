@@ -1,29 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PRG.Zip.Helpers
 {
-    public class Node
-    {
-        public Node Previous;
-        public Node Next;
-
-        public Node Left;
-        public Node Right;
-
-        public int Frequency;
-        public byte Value;
-
-        public Node(int frequency, byte value)
-        {
-            Frequency = frequency;
-            Value = value;
-        }
-    }
-
     public static class Dll
     {
+        private const char Left = '1';
+        private const char Right = '0';
+
+        public static Dictionary<byte, string> paths = new Dictionary<byte, string>();
+
         public static Node Head;
-        public static Node Tail;
+        private static Node _tail;
 
         /// <summary>
         /// Add a value to DLL on the correct position(ordered by frequency asc)
@@ -39,7 +27,7 @@ namespace PRG.Zip.Helpers
             if (Head == null)
             {
                 Head = n;
-                Tail = n;
+                _tail = n;
             }
             else
             {
@@ -51,15 +39,15 @@ namespace PRG.Zip.Helpers
                 }
                 else
                 {
-                    if (n.Frequency > Tail.Frequency)
+                    if (n.Frequency > _tail.Frequency)
                     {
-                        n.Previous = Tail;
-                        Tail.Next = n;
-                        Tail = n;
+                        n.Previous = _tail;
+                        _tail.Next = n;
+                        _tail = n;
                     }
                     else
                     {
-                        var tempNode = Tail;
+                        var tempNode = _tail;
 
                         while (tempNode.Frequency >= n.Frequency)
                         {
@@ -78,23 +66,23 @@ namespace PRG.Zip.Helpers
         }
 
         /// <summary>
-        /// Add non leaf within the DLL
+        /// Add node within the DLL
         /// </summary>
         /// <algo>
         /// Find correct position in terms of frequency and place node
         /// Set head 2 positions forward
         /// </algo>
-        public static void AddNonLeaf(Node n)
+        public static void AddInOrder(Node n)
         {
-            if (n.Frequency > Tail.Frequency)
+            if (n.Frequency > _tail.Frequency)
             {
-                n.Previous = Tail;
-                Tail.Next = n;
-                Tail = n;
+                n.Previous = _tail;
+                _tail.Next = n;
+                _tail = n;
             }
             else
             {
-                var tempNode = Tail;
+                var tempNode = _tail;
 
                 while (tempNode.Frequency >= n.Frequency)
                 {
@@ -111,16 +99,24 @@ namespace PRG.Zip.Helpers
             Head = Head.Next.Next;
         }
 
-
-        // /// <summary>
-        // /// Read DLL ASC
-        // /// </summary>
-        // /// <algo>
-        // /// 
-        // /// </algo>
-        // public static void ReadInOrder()
-        // {
-        //     throw new NotImplementedException();
-        // }
+        /// <summary>
+        /// Fill associative array with respective paths in tree
+        /// </summary>
+        /// <algo>
+        /// Find leafs in tree recursively, add leaf path to path dictionary
+        /// </algo>
+        public static void BuildPath(Node n, string currentPath = "")
+        {
+            if (n.IsLeaf())
+                paths.Add(n.Value, currentPath);
+            
+            else
+            {
+                if (n.Left != null)
+                    BuildPath(n.Left, currentPath + Left);
+                if(n.Right != null)
+                    BuildPath(n.Right, currentPath + Right);
+            }
+        }
     }
 }
