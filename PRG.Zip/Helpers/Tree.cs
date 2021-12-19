@@ -1,17 +1,17 @@
-﻿namespace PRG.Zip.Helpers
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace PRG.Zip.Helpers
 {
     public static class Tree
     {
-        private const char Left = '1';
-        private const char Right = '0';
-        
         /// <summary>
         /// Create tree with leafs/non-leafs
         /// </summary>
         /// <algo>
         /// Start at head
         /// Combine head frequency and head.Right frequency into new node
-        /// 
+        /// Add node to DLL
         /// </algo>
         public static void BuildTree()
         {
@@ -23,22 +23,27 @@
                     Right = Dll.Head.Next
                 };
             
-                Dll.AddNonLeaf(n);
+                Dll.AddInOrder(n);
             }
         }
-
-        public static void StoreTree()
+        
+        
+        /// <summary>
+        /// Return encoded string
+        /// </summary>
+        /// <algo>
+        /// Loop through each character in the input and add the according path to output string
+        /// </algo>
+        public static string EncodeString(string input, Dictionary<byte,string> paths)
         {
-            string tree = "";
-
-            var tempNode = Dll.Head;
+            string output = "";
             
-            if (!IsLeaf(tempNode))
+            foreach (char c in input)
             {
-                
+                output += paths.First(x => x.Key == c).Value;
             }
-        }
 
-        private static bool IsLeaf(Node n) => n.Left != null || n.Right != null;
+            return output;
+        }
     }
 }
