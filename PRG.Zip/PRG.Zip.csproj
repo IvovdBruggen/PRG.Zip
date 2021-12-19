@@ -54,6 +54,7 @@
         </Compile>
         <Compile Include="Helpers\Dll.cs" />
         <Compile Include="Helpers\FileHelper.cs" />
+        <Compile Include="Helpers\Node.cs" />
         <Compile Include="Helpers\Tree.cs" />
         <Compile Include="Helpers\Zipper.cs" />
         <Compile Include="Program.cs" />
